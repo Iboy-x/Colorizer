@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Visualizer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Color Visualizer</h1>
+    <div class="sliders">
+      <label for="red">Red: <span id="redValue">173</span></label>
+      <input type="range" id="red" min="0" max="255" value="173">
+
+      <label for="green">Green: <span id="greenValue">216</span></label>
+      <input type="range" id="green" min="0" max="255" value="216">
+
+      <label for="blue">Blue: <span id="blueValue">230</span></label>
+      <input type="range" id="blue" min="0" max="255" value="230">
+
+      <label for="alpha">Alpha: <span id="alphaValue">1</span></label>
+      <input type="range" id="alpha" min="0" max="1" step="0.01" value="1">
+    </div>
+    <div class="output">
+      <p>RGBA Code: <span id="rgbaCode">rgba(173, 216, 230, 1)</span></p>
+      <p>Hex Code: <span id="hexCode">#ADD8E6</span> <button id="copyHex" class="but">Copy</button></p>
+
+    </div>
+  </div>
+
+  <script>
+// Get references to sliders and display elements
+const redSlider = document.getElementById('red');
+const greenSlider = document.getElementById('green');
+const blueSlider = document.getElementById('blue');
+const alphaSlider = document.getElementById('alpha');
+
+const redValue = document.getElementById('redValue');
+const greenValue = document.getElementById('greenValue');
+const blueValue = document.getElementById('blueValue');
+const alphaValue = document.getElementById('alphaValue');
+
+const rgbaCode = document.getElementById('rgbaCode');
+const hexCode = document.getElementById('hexCode');
+
+// Function to update the background, RGBA, and Hex code
+function updateColor() {
+  const r = redSlider.value;
+  const g = greenSlider.value;
+  const b = blueSlider.value;
+  const a = alphaSlider.value;
+
+  const rgba = `rgba(${r}, ${g}, ${b}, ${a})`;
+  const hex = rgbToHex(r, g, b);
+
+  // Update values and background
+  redValue.textContent = r;
+  greenValue.textContent = g;
+  blueValue.textContent = b;
+  alphaValue.textContent = a;
+  rgbaCode.textContent = rgba;
+  hexCode.textContent = hex;
+
+  document.body.style.backgroundColor = rgba;
+}
+
+// Convert RGB to Hex
+function rgbToHex(r, g, b) {
+  return "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase();
+}
+
+// Copy Hex Code to Clipboard
+document.getElementById('copyHex').addEventListener('click', () => {
+  const hexValue = document.getElementById('hexCode').textContent;
+  navigator.clipboard.writeText(hexValue).then(() => {
+    alert("Hex code copied: " + hexValue);
+  });
+});
+
+// Add event listeners to sliders
+redSlider.addEventListener('input', updateColor);
+greenSlider.addEventListener('input', updateColor);
+blueSlider.addEventListener('input', updateColor);
+alphaSlider.addEventListener('input', updateColor);
+
+// Initial color update
+updateColor();
+
+
+  </script>
+</body>
+</html>
